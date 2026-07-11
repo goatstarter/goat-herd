@@ -1,3 +1,13 @@
+<div align="center">
+
+<img src="assets/banner.svg" alt="goat-herd" width="100%"/>
+
+[![License: MIT](https://img.shields.io/badge/license-MIT-4ade80?style=flat-square)](LICENSE)
+[![Claude%20Code](https://img.shields.io/badge/Claude%20Code-8%20subagents-3b82f6?style=flat-square)](https://github.com/goatstarter/goat-herd)
+[![Goatstarter](https://img.shields.io/badge/goat-family-a855f7?style=flat-square)](https://github.com/goatstarter)
+
+</div>
+
 🇬🇧 English · [🇹🇷 Türkçe](README.tr.md)
 
 # goat-herd

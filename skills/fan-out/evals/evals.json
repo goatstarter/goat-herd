@@ -1,0 +1,44 @@
+{
+  "skill_name": "fan-out",
+  "pack": "goat-herd",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have a 40-file migration to do, same mechanical change in each. Run agents in parallel?",
+      "expected_output": "Should approve delegation because the work is mechanical and independent, split by file so results merge mechanically, and require that no two agents own the same file. Should require identical return shape across agents, a merge plan decided before launching, and a cap with a condition for a second round rather than launching forty agents.",
+      "assertions": [
+        "Approves delegation with the specific reason",
+        "Splits by file so merging is mechanical",
+        "Requires no shared files between agents",
+        "Requires identical return shape",
+        "Decides the merge plan before launching",
+        "Caps the fan-out with a condition for round two"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "\u00fc\u00e7 ajana ayn\u0131 soruyu sordum, \u00fc\u00e7\u00fc farkl\u0131 cevap verdi, hangisi do\u011fru",
+      "expected_output": "Should identify that the disagreement rule was not decided in advance, and check whether the agents received the same shared context since uneven briefing manufactures disagreement. Should propose the three merge options, union and verify, intersection, or escalate to a verification pass, and recommend the verification pass for a high-stakes question.",
+      "assertions": [
+        "Triggers on Turkish phrasing",
+        "Notes the disagreement rule was not decided in advance",
+        "Checks whether the agents received the same context",
+        "Offers the three merge options",
+        "Recommends a verification pass for high stakes"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "The split is decided: one agent per module. Now write the brief for the auth one.",
+      "expected_output": "Should recognize this as brief-subagent work and hand off in one line.",
+      "assertions": [
+        "Names brief-subagent as the correct skill",
+        "Does not re-plan the fan-out",
+        "Explains in one line why the handoff is correct"
+      ],
+      "files": []
+    }
+  ]
+}

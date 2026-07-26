@@ -1,0 +1,43 @@
+{
+  "skill_name": "brief-subagent",
+  "pack": "goat-herd",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Spawn an agent to look for security issues in our API layer.",
+      "expected_output": "Should read the pack's security-checker definition first and reuse its output contract rather than inventing one. Should require exact in-scope paths, name out-of-scope paths and activities, bound the investigation depth, and state anti-goals including read-only and no claiming a test passed without running it. Should require self-verification of file paths and line numbers before return.",
+      "assertions": [
+        "Reads the matching agent definition first",
+        "Requires exact in-scope paths rather than a description",
+        "Names out-of-scope paths and activities",
+        "Bounds investigation depth",
+        "States anti-goals including read-only",
+        "Requires self-verification before return"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "alt ajana verdim ama i\u015fe yaramaz bir \u00f6zet d\u00f6nd\u00fc, ne yanl\u0131\u015f yapt\u0131m",
+      "expected_output": "Should diagnose the missing output contract as the most likely cause, and specifically that the shape was described rather than stated literally. Should also check whether the subagent was told the output feeds another step, since that is what produces conversational framing. Should rewrite the brief with a literal return shape.",
+      "assertions": [
+        "Triggers on Turkish phrasing",
+        "Diagnoses the missing literal output contract",
+        "Checks whether the output consumer was stated",
+        "Rewrites the brief with a literal return shape"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I have six independent modules to migrate. Should I run one agent or six?",
+      "expected_output": "Should recognize this as a delegation and splitting decision belonging to fan-out and hand off in one line.",
+      "assertions": [
+        "Names fan-out as the correct skill",
+        "Does not write a single brief",
+        "Explains in one line why the handoff is correct"
+      ],
+      "files": []
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "goat-herd",
+  "description": "8 production subagents with strict output contracts, plus the briefing and fan-out discipline",
+  "version": "2.0.0",
+  "author": {
+    "name": "Goatstarter Ventures",
+    "url": "https://goatstarter.com"
+  },
+  "homepage": "https://github.com/goatstarter/goat-herd",
+  "repository": "https://github.com/goatstarter/goat-herd",
+  "license": "MIT",
+  "skills": "./skills"
+}

@@ -43,6 +43,36 @@ Common contract across all eight: cite file:line for every claim, report what wa
 | `guides/briefing.md` | The 5-part brief (goal, scope, constraints, return format, undiscoverable context) and how to treat subagent output |
 | `install.sh` | Idempotent installer, all agents or a selection |
 
+## Skills
+
+Every skill ends with a **Definition of done**: a checklist where each item is verifiable by
+reading the output. The agent may not claim completion until every box holds.
+
+| Skill | What it decides |
+|---|---|
+| [brief-subagent](skills/brief-subagent/) | Writes the briefing that makes a subagent useful: a literal output contract, scope in both directions, the context it cannot see, anti-goals, and self-verification before return |
+| [fan-out](skills/fan-out/) | Whether to delegate at all, and along which seam. Splits by artifact so results merge mechanically, and settles the disagreement rule before launching |
+
+## Install
+
+```bash
+# Option 1: any agent that reads SKILL.md (Claude Code, Codex, Cursor)
+npx skills add goatstarter/goat-herd
+
+# Option 2: as a Claude Code plugin marketplace
+# in Claude Code: /plugin marketplace add goatstarter/goat-herd
+
+# Option 3: clone and copy
+git clone https://github.com/goatstarter/goat-herd.git
+cd goat-herd
+./install.sh /path/to/your-project           # all 2 skills
+./install.sh /path/to/your-project brief-subagent   # or pick
+./install.sh --list                          # see what is available
+```
+
+`install.sh` writes only inside the project directory you name. It touches nothing in your
+home directory and needs no elevated permissions.
+
 ## Quickstart
 
 ```bash

@@ -43,6 +43,38 @@ Sekizinin ortak sözleşmesi: her iddiaya file:line kanıtı, yapılmayanı yap�
 | `guides/briefing.md` | 5 parçalı brief (hedef, kapsam, kısıtlar, dönüş formatı, agent'ın keşfedemeyeceği bağlam) ve subagent çıktısına nasıl yaklaşılacağı |
 | `install.sh` | Idempotent kurulum, tümü veya seçilenler |
 
+## Skill'ler
+
+Her skill'in sonunda **Definition of done** var: her maddesi çıktıya bakılarak doğrulanabilen
+bir kontrol listesi. Agent, her madde tutmadan işi bitti sayamaz.
+
+Skill içerikleri İngilizce, ama tetikleyiciler iki dilli. Türkçe yazdığında da ateşlenir.
+
+| Skill | Neye karar verir |
+|---|---|
+| [brief-subagent](skills/brief-subagent/) | Alt ajanı işe yarar kılan brief'i yazar: birebir çıktı sözleşmesi, iki yönlü kapsam, göremediği bağlam, yasaklar, ve dönmeden önce kendi kendini doğrulama |
+| [fan-out](skills/fan-out/) | Devretmeye değer mi, ve hangi dikişten. Sonuçlar mekanik birleşsin diye artefakta göre böler, ve anlaşmazlık kuralını başlamadan belirler |
+
+## Kurulum
+
+```bash
+# 1. yol: SKILL.md okuyan her agent (Claude Code, Codex, Cursor)
+npx skills add goatstarter/goat-herd
+
+# 2. yol: Claude Code plugin marketplace olarak
+# Claude Code içinde: /plugin marketplace add goatstarter/goat-herd
+
+# 3. yol: klonla ve kopyala
+git clone https://github.com/goatstarter/goat-herd.git
+cd goat-herd
+./install.sh /path/to/your-project           # 2 skill'in hepsi
+./install.sh /path/to/your-project brief-subagent   # ya da seç
+./install.sh --list                          # neler var
+```
+
+`install.sh` sadece adını verdiğin proje klasörünün içine yazar. Home klasörüne dokunmaz,
+yetki yükseltmesi istemez.
+
 ## Hızlı başlangıç
 
 ```bash

@@ -1,0 +1,19 @@
+{
+  "name": "goat-herd",
+  "owner": {
+    "name": "Goatstarter Ventures",
+    "url": "https://goatstarter.com"
+  },
+  "metadata": {
+    "description": "8 production subagents with strict output contracts, plus the briefing and fan-out discipline",
+    "version": "2.0.0",
+    "repository": "https://github.com/goatstarter/goat-herd"
+  },
+  "plugins": [
+    {
+      "name": "goat-herd",
+      "description": "Eight subagent definitions with output contracts already written, plus two skills that decide how to use them: a briefing skill that states the output contract literally, bounds scope in both directions, supplies the context a subagent cannot see, and requires self-verification before return; and a fan-out skill that decides whether to delegate at all, splits by artifact so results merge mechanically, and settles the merge and disagreement rules before any agent launches.",
+      "source": "./"
+    }
+  ]
+}

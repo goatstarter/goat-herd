@@ -1,21 +1,42 @@
 #!/usr/bin/env bash
 # goat-herd installer
-# Copies agents into <target>/.claude/agents/. Idempotent: re-running overwrites
-# previously installed copies with the current versions.
+#
+# Installs skills into <target>/.claude/skills/.
+# Idempotent: re-running overwrites previously installed copies with the current versions.
+#
+# This script only ever writes inside the target directory you name. It touches nothing in
+# your home directory and needs no elevated permissions.
 #
 # Usage:
-#   ./install.sh /path/to/your-project                        # install all 8 agents
-#   ./install.sh /path/to/your-project bug-hunter migrator    # install selected agents
+#   ./install.sh /path/to/your-project                  # everything
+#   ./install.sh /path/to/your-project <skill> [...]    # selected skills
+#   ./install.sh --list                                 # show available skills
 set -euo pipefail
 
-SRC_DIR="$(cd "$(dirname "$0")" && pwd)/agents"
+SRC="$(cd "$(dirname "$0")" && pwd)"
+SKILLS_DIR="$SRC/skills"
+
+list_skills() {
+  for s in "$SKILLS_DIR"/*/; do
+    [ -d "$s" ] || continue
+    name="$(basename "${s%/}")"
+    desc="$(sed -n 's/^description: *//p' "$s/SKILL.md" 2>/dev/null | head -1 | cut -c1-86)"
+    printf '  %-24s %s\n' "$name" "$desc"
+  done
+}
+
+if [ "${1:-}" = "--list" ]; then
+  echo "goat-herd skills:"
+  list_skills
+  exit 0
+fi
 
 if [ $# -lt 1 ]; then
-  echo "Usage: $0 <target-project-dir> [agent-name ...]" >&2
-  echo "Available agents:" >&2
-  for a in "$SRC_DIR"/*.md; do
-    echo "  - $(basename "$a" .md)" >&2
-  done
+  echo "Usage: $0 <target-project-dir> [skill-name ...]" >&2
+  echo "       $0 --list" >&2
+  echo "" >&2
+  echo "Available skills:" >&2
+  list_skills >&2
   exit 1
 fi
 
@@ -27,33 +48,38 @@ if [ ! -d "$TARGET" ]; then
   exit 1
 fi
 
-DEST="$TARGET/.claude/agents"
-mkdir -p "$DEST"
+SKILL_DEST="$TARGET/.claude/skills"
+mkdir -p "$SKILL_DEST"
 
-install_agent() {
-  a="$1"
-  if [ ! -f "$SRC_DIR/$a.md" ]; then
-    echo "Error: unknown agent '$a'. Run without agent names to list available ones." >&2
+install_skill() {
+  s="$1"
+  if [ ! -d "$SKILLS_DIR/$s" ]; then
+    echo "Error: unknown skill '$s'. Run with --list to see available ones." >&2
     exit 1
   fi
-  cp "$SRC_DIR/$a.md" "$DEST/$a.md"
-  echo "  installed: $a"
+  rm -rf "${SKILL_DEST:?}/$s"
+  cp -R "$SKILLS_DIR/$s" "$SKILL_DEST/$s"
+  rm -rf "${SKILL_DEST:?}/$s/evals"
+  echo "  installed skill: $s"
 }
 
-echo "Installing into $DEST"
 if [ $# -eq 0 ]; then
-  for a in "$SRC_DIR"/*.md; do
-    install_agent "$(basename "$a" .md)"
+  for s in "$SKILLS_DIR"/*/; do
+    [ -d "$s" ] || continue
+    install_skill "$(basename "${s%/}")"
   done
 else
-  for a in "$@"; do
-    install_agent "$a"
+  for s in "$@"; do
+    install_skill "$s"
   done
 fi
 
 echo ""
 echo "Done. Notes:"
-echo "  - Each agent's description consumes a little context; install only what you will use."
-echo "  - Read guides/briefing.md before delegating: results depend on the brief."
-echo "  - Fresh-context verification and diff review live in goat-fable (verifier, code-reviewer)."
+echo "  - The eight agent definitions under agents/ already carry output contracts. Read one before briefing it."
+echo "  - fan-out first, brief-subagent second. Deciding not to delegate is a valid outcome."
+echo "  - Two agents editing one file is the work you were trying to delegate."
+echo "  - Skills auto-trigger from their descriptions, in English or Turkish, or invoke them"
+echo "    manually with /<skill-name>."
+echo "  - Each installed skill's description costs a little context. Install what you will use."
 echo "  - Recommended for Opus 4.8 users: /model claude-opus-4-8 and /effort xhigh."
